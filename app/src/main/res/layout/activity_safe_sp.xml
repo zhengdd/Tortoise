@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置SP名称"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/spInit"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="初始化"/>
+
+        <EditText
+            android:id="@+id/etSpMame"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/spInit"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etSetKey"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="设置存储key"/>
+
+        <EditText
+            android:id="@+id/etSetValue"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:hint="设置存储Value"/>
+
+        <Button
+            android:id="@+id/btnSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="加密存储"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/getKey"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="设置查询key"/>
+
+        <Button
+            android:id="@+id/btnGet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取加密数据"/>
+
+        <TextView
+            android:id="@+id/getValue"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:hint="获取结果"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnGetN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="原生获取加密数据"/>
+
+        <TextView
+            android:id="@+id/getValueN"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:hint="原生获取结果"/>
+    </LinearLayout>
+
+</LinearLayout>

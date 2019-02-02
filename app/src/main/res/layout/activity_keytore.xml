@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etAlias"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Set Alias"
+        android:text="zhengdd"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="输入原文"/>
+
+    <EditText
+        android:id="@+id/etInText"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+
+    <TextView
+        android:id="@+id/btnEnCode"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="加密"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="输入原文"/>
+
+    <EditText
+        android:id="@+id/etOutEnText"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/font_gray_3"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/btnDeCode"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="解密"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tvOutDeText"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/font_gray_3"
+        android:textSize="16dp"/>
+
+</LinearLayout>
