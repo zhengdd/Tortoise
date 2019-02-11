@@ -30,13 +30,13 @@ public class AESUtil {
     /**
      * AES加密算法加密
      *
-     * @param seed 种子
+     * @param seed   种子
      * @param intext 原文
      * @return 密文
      */
     public static String encode(String seed, String intext) {
         try {
-            byte[] rawKey = getRawKey(seed.getBytes());
+            byte[] rawKey = getRawKey(seed.getBytes()).getEncoded();
             return encode(rawKey, intext);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class AESUtil {
     /**
      * AES加密算法加密
      *
-     * @param key key
+     * @param key    key
      * @param intext 原文
      * @return 密文
      */
@@ -79,7 +79,6 @@ public class AESUtil {
     }
 
     /**
-     *
      * @return AES加密算法加密
      * @throws Exception
      */
@@ -96,13 +95,13 @@ public class AESUtil {
     /**
      * AES解密算法解密
      *
-     * @param seed 种子
+     * @param seed      种子
      * @param encrypted 密文
      * @return 原文
      */
     public static String decode(String seed, String encrypted) {
         try {
-            byte[] rawKey = getRawKey(seed.getBytes());
+            byte[] rawKey = getRawKey(seed.getBytes()).getEncoded();
             return encode(rawKey, encrypted);
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,7 +113,7 @@ public class AESUtil {
     /**
      * AES解密算法解密
      *
-     * @param key key
+     * @param key       key
      * @param encrypted 密文
      * @return 原文
      */
@@ -186,7 +185,7 @@ public class AESUtil {
      * @throws Exception
      */
     @SuppressLint("DeletedProvider")
-    private static byte[] getRawKey(byte[] seed) throws Exception {
+    public static SecretKey getRawKey(byte[] seed) throws Exception {
         KeyGenerator kgen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);
         // SHA1PRNG 强随机种子算法, 要区别4.2以上版本的调用方法
         SecureRandom sr = null;
@@ -201,8 +200,7 @@ public class AESUtil {
         sr.setSeed(seed);
         kgen.init(128, sr);
         SecretKey skey = kgen.generateKey();
-        byte[] raw = skey.getEncoded();
-        return raw;
+        return skey;
 
     }
 

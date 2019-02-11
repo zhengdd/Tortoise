@@ -66,7 +66,7 @@ public class SafeSpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.spInit:
                 String name = etSpName.getText().toString().trim();
                 if (!TextUtils.isEmpty(name)) {
-                    SafeSpManager.turnInit(App.getContext(), name, getSecretKey());
+                    SafeSpManager.turnInit(App.getContext(), name, "asfdfdffdf");
                 }
                 break;
             case R.id.btnSet:
@@ -88,7 +88,6 @@ public class SafeSpActivity extends AppCompatActivity implements View.OnClickLis
                         && !TextUtils.isEmpty(getkey)) {
 
                     getvalue = SafeSpManager.getInstance(name2).getString(getkey);
-                    SafeSpManager.getInstance(name2).getAll();
                     getValue.setText(getvalue);
 
                 }

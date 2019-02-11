@@ -26,14 +26,27 @@ public class SafeSpManager {
     public static Context appContext;
     private String spName;
     private SecretKey aesKey;
+    private String aesKeyStr;
     private SharedPreferences mSetSp;
 
 
-    protected SafeSpManager(Context context, String spname, SecretKey key) {
+    protected SafeSpManager(Context context, String spname, SecretKey key, String strkey) {
         appContext = context.getApplicationContext();
         this.spName = spname;
         this.aesKey = key;
+        this.aesKeyStr = strkey;
+        if (aesKey == null && TextUtils.isEmpty(aesKeyStr)) {
+            throw new RuntimeException("Key error, initialization failed");
+        }
 
+        if (aesKey == null && !TextUtils.isEmpty(aesKeyStr)) {
+            try {
+                this.aesKey = AESUtil.getRawKey(aesKeyStr.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Key error, initialization failed");
+            }
+        }
         String key_md5 = getShardPreferences().getString(KEY_AES_MD5, "");
         if (!TextUtils.isEmpty(key_md5)) {
             if (!key_md5.equals(MD5Util.bytes2Md5(aesKey.getEncoded()))) {
@@ -51,9 +64,15 @@ public class SafeSpManager {
 
     }
 
+
     public static void turnInit(Context context, SecretKey key) {
         turnInit(context, null, key);
     }
+
+    public static void turnInit(Context context, String key) {
+        turnInit(context, null, key);
+    }
+
 
     public static void turnInit(Context context, String spname, SecretKey key) {
         if (context == null) {
@@ -68,12 +87,36 @@ public class SafeSpManager {
 
         if (instanceMap == null) {
             instanceMap = new HashMap<>();
-            SafeSpManager controller = new SafeSpManager(context, spname, key);
+            SafeSpManager controller = new SafeSpManager(context, spname, key, null);
             instanceMap.put(spname, controller);
 
         } else {
             if (!instanceMap.containsKey(spname)) {
-                instanceMap.put(spname, new SafeSpManager(context, spname, key));
+                instanceMap.put(spname, new SafeSpManager(context, spname, key, null));
+            }
+        }
+
+    }
+
+    public static void turnInit(Context context, String spname, String key) {
+        if (context == null) {
+            throw new NullPointerException("The context can not be Null！");
+        }
+        if (key == null) {
+            throw new NullPointerException("The key can not be Null！");
+        }
+        if (TextUtils.isEmpty(spname)) {
+            spname = context.getApplicationContext().getPackageName();
+        }
+
+        if (instanceMap == null) {
+            instanceMap = new HashMap<>();
+            SafeSpManager controller = new SafeSpManager(context, spname, null, key);
+            instanceMap.put(spname, controller);
+
+        } else {
+            if (!instanceMap.containsKey(spname)) {
+                instanceMap.put(spname, new SafeSpManager(context, spname, null, key));
             }
         }
 

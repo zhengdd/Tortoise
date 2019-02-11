@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "0.0.1"
+        versionName "0.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -35,7 +35,7 @@ publish {
     userOrg = 'zddstudent'           //bintray注册的用户名
     groupId = 'com.dongdong.animal'            //compile引用时的第1部分groupId
     artifactId = 'Toroise'       //compile引用时的第2部分项目名
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.2'
     licences = ['Apache-2.0']
 
 }

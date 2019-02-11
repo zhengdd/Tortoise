@@ -187,6 +187,13 @@ public class KeyStoreManager {
         return null;
     }
 
+    /**
+     * 进行RSA加密
+     * @param plainText 被加密数据
+     * @param key 公钥值
+     * @return
+     * @throws Exception
+     */
     private static String encryptRSA(String plainText, PublicKey key) throws Exception {
 
         Cipher cipher = Cipher.getInstance(RSA_MODE_OAEP);
@@ -196,6 +203,12 @@ public class KeyStoreManager {
         return Base64.encodeToString(encryptedByte, Base64.NO_WRAP);
     }
 
+    /**
+     *
+     * @param alias Rsa别名
+     * @param enseed 加密的种子
+     * @return 解密数据
+     */
     private static String deSeed(String alias, String enseed) {
         //Rsa已经存在
         if (hasAlias(alias)) {
