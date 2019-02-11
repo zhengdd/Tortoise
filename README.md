@@ -31,6 +31,9 @@ name：SharedPreferences文件名称，可为null，当为null时默认PackageNa
 SafeSpManager.turnInit(context, SecretKey);
 SafeSpManager.turnInit(context, name, SecretKey);
 ```
+可以支持不同name进行区分存储，只需要多次执行SafeSpManager.turnInit（）即可。
+
+
 使用时通过name获取对象然后通过put/get进行操作
 
 ```
