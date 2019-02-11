@@ -223,10 +223,6 @@ public class SafeSpManager {
         return mSetSp.contains(MD5Util.str2Md5(name));
     }
 
-    public void getAll() {
-        mSetSp.getAll();
-    }
-
     public void clean() {
         String key_md5 = mSetSp.getString(KEY_AES_MD5, "");
         if (mSetSp.edit().clear().commit()) {
