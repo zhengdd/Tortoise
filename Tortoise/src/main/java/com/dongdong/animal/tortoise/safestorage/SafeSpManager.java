@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 
 /**
@@ -25,12 +25,12 @@ public class SafeSpManager {
 
     public static Context appContext;
     private String spName;
-    private SecretKey aesKey;
+    private SecretKeySpec aesKey;
     private String aesKeyStr;
     private SharedPreferences mSetSp;
 
 
-    protected SafeSpManager(Context context, String spname, SecretKey key, String strkey) {
+    protected SafeSpManager(Context context, String spname, SecretKeySpec key, String strkey) {
         appContext = context.getApplicationContext();
         this.spName = spname;
         this.aesKey = key;
@@ -41,7 +41,7 @@ public class SafeSpManager {
 
         if (aesKey == null && !TextUtils.isEmpty(aesKeyStr)) {
             try {
-                this.aesKey = AESUtil.getRawKey(aesKeyStr.getBytes());
+                this.aesKey = AESUtil.getAesKey(aesKeyStr);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("Key error, initialization failed");
@@ -65,7 +65,7 @@ public class SafeSpManager {
     }
 
 
-    public static void turnInit(Context context, SecretKey key) {
+    public static void turnInit(Context context, SecretKeySpec key) {
         turnInit(context, null, key);
     }
 
@@ -74,7 +74,7 @@ public class SafeSpManager {
     }
 
 
-    public static void turnInit(Context context, String spname, SecretKey key) {
+    public static void turnInit(Context context, String spname, SecretKeySpec key) {
         if (context == null) {
             throw new NullPointerException("The context can not be Null！");
         }

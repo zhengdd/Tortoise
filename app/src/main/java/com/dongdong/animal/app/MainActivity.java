@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.dongdong.animal.app.ui.aesuse.AesUseActivity;
 import com.dongdong.animal.app.ui.spsafeuse.SafeSpActivity;
+import com.dongdong.animal.tortoise.confusion.ConfusionUtil;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

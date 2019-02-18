@@ -3,9 +3,12 @@ package com.dongdong.animal.tortoise.utils;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.security.keystore.KeyProperties;
+import android.text.TextUtils;
 import android.util.Base64;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -36,7 +39,7 @@ public class AESUtil {
      */
     public static String encode(String seed, String intext) {
         try {
-            byte[] rawKey = getRawKey(seed.getBytes()).getEncoded();
+            byte[] rawKey = getAesKey(seed).getEncoded();
             return encode(rawKey, intext);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +56,7 @@ public class AESUtil {
      * @param intext 原文
      * @return 密文
      */
-    public static String encode(SecretKey key, String intext) {
+    public static String encode(SecretKeySpec key, String intext) {
         if (key == null) {
             return intext;
         }
@@ -101,7 +104,7 @@ public class AESUtil {
      */
     public static String decode(String seed, String encrypted) {
         try {
-            byte[] rawKey = getRawKey(seed.getBytes()).getEncoded();
+            byte[] rawKey = getAesKey(seed).getEncoded();
             return encode(rawKey, encrypted);
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +120,7 @@ public class AESUtil {
      * @param encrypted 密文
      * @return 原文
      */
-    public static String decode(SecretKey key, String encrypted) {
+    public static String decode(SecretKeySpec key, String encrypted) {
         if (key == null) {
             return encrypted;
         }
@@ -176,32 +179,50 @@ public class AESUtil {
         return result;
     }
 
-
-    /**
-     * 生成密钥
-     *
-     * @param seed 种子
-     * @return 密钥窜
-     * @throws Exception
-     */
-    @SuppressLint("DeletedProvider")
-    public static SecretKey getRawKey(byte[] seed) throws Exception {
-        KeyGenerator kgen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);
-        // SHA1PRNG 强随机种子算法, 要区别4.2以上版本的调用方法
-        SecureRandom sr = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            sr = SecureRandom.getInstance(ALGORITHM, new CryptoProvider());
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            sr = SecureRandom.getInstance(ALGORITHM, CRYPTO);
+    public static SecretKeySpec getAesKey(String seed) {
+        if (TextUtils.isEmpty(seed)) {
+            return null;
         } else {
-            sr = SecureRandom.getInstance(ALGORITHM);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                return createKeyUpP(seed);
+            } else {
+                return createKeyDownP(seed);
+            }
         }
 
-        sr.setSeed(seed);
-        kgen.init(128, sr);
-        SecretKey skey = kgen.generateKey();
-        return skey;
+    }
 
+
+    private static SecretKeySpec createKeyDownP(String seed) {
+        KeyGenerator kgen = null;
+        try {
+            kgen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);
+            // SHA1PRNG 强随机种子算法, 要区别4.2以上版本的调用方法
+            SecureRandom sr = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                sr = SecureRandom.getInstance(ALGORITHM, new CryptoProvider());
+            } else {
+                sr = SecureRandom.getInstance(ALGORITHM);
+            }
+            sr.setSeed(seed.getBytes("UTF-8"));
+            kgen.init(128, sr);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(kgen.generateKey().getEncoded(), KeyProperties.KEY_ALGORITHM_AES);
+            return secretKeySpec;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+    private static SecretKeySpec createKeyUpP(String password) {
+        byte[] rawKey = InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(password.getBytes(), 16);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(rawKey, KeyProperties.KEY_ALGORITHM_AES);
+        return secretKeySpec;
     }
 
 
